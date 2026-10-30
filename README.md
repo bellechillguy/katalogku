@@ -5,7 +5,7 @@ KatalogKu is an Expo app built. The implementation covers five screens: Welcome,
 <p>
   <img width="206" height="458.5" alt="Welcome screen" src="https://github.com/user-attachments/assets/faa461d1-ce5f-46f4-b104-4e97eee99e40" />
   <img width="206" height="458.5" alt="Home screen" src="https://github.com/user-attachments/assets/d74d4055-3108-41b3-9e79-d1e38c55d1d0" />
-  <img width="206" height="458.5" alt="Product details screen" src="https://github.com/user-attachments/assets/6d2ede34-e8f6-46bd-952b-328b98f05a2d" />
+  <img width="206" height="458.5" alt="Product details screen" src="https://github.com/user-attachments/assets/6d2ede34-e8f6-46bd-952b-328b98f05a2d" /> <br>
   <img width="206" height="458.5" alt="Favorites screen" src="https://github.com/user-attachments/assets/1d3d160e-1499-4458-8375-1744372cb20e" />
   <img width="206" height="458.5" alt="Profile screen" src="https://github.com/user-attachments/assets/2cc87dd9-74d0-4807-8411-00de3f95fed8" />
 </p>
