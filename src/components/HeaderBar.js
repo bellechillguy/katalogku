@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import BrandTitle from './BrandTitle';
@@ -20,11 +20,14 @@ function Background() {
 
 /** HeaderBar/Home — KatalogKu wordmark + tagline. */
 export function BrandHeader({ subtitle = 'Find the products you need' }) {
+  const { width } = useWindowDimensions();
+  const logoFontSize = Math.min(32, Math.max(22, width * 0.085));
+
   return (
     <View style={styles.bar}>
       <Background />
       <View style={styles.brandRow}>
-        <BrandTitle fontSize={32} stroke={1} />
+        <BrandTitle fontSize={logoFontSize} stroke={1} />
       </View>
       <Text style={styles.subtitle}>{subtitle}</Text>
     </View>
@@ -91,6 +94,7 @@ const styles = StyleSheet.create({
   },
   brandRow: {
     paddingLeft: 33,
+    paddingRight: 33,
     paddingTop: 52,
     height: 91,
   },

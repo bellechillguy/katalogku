@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import BrandTitle from '../src/components/BrandTitle';
@@ -13,6 +13,8 @@ const BLOB = ['rgba(133,180,235,0.85)', 'rgba(135,200,121,0.32)', 'rgba(249,250,
 
 export default function Welcome() {
   const router = useRouter();
+  const { width } = useWindowDimensions();
+  const logoFontSize = Math.min(54, Math.max(32, (width - 48) / 5.6));
 
   useEffect(() => {
     const t = setTimeout(() => router.replace('/home'), SPLASH_MS);
@@ -28,7 +30,7 @@ export default function Welcome() {
         locations={[0, 0.6, 1]}
         style={styles.bottom}
       />
-      <BrandTitle fontSize={54} stroke={1} />
+      <BrandTitle fontSize={logoFontSize} stroke={1} />
     </View>
   );
 }
