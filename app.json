@@ -3,9 +3,12 @@
     "name": "KatalogKu",
     "slug": "katalogku",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "userInterfaceStyle": "light",
     "scheme": "katalogku2",
+    "ios": {
+      "supportsTablet": true
+    },
     "plugins": [
       "expo-font",
       "expo-router",
