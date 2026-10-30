@@ -1,6 +1,6 @@
 # KatalogKu
 
-KatalogKu is an Expo app built. The implementation covers five screens: Welcome, Home, Product Details, Favorites, and Profile.
+KatalogKu is an Expo app built with Expo Router. It includes Welcome, Home, Product Details, Favorites, Cart, Profile, and About screens.
 
 <p>
   <img width="206" height="458.5" alt="Welcome screen" src="https://github.com/user-attachments/assets/faa461d1-ce5f-46f4-b104-4e97eee99e40" />
@@ -61,11 +61,13 @@ The native Liquid Glass effect requires iOS 26 or later and a build made with th
 | --- | --- |
 | `app/index.js` | Welcome (redirects to `/home` after 1.8 seconds) |
 | `app/(tabs)/home.js` | Screen/Home |
+| `app/(tabs)/favorites.js` | Screen/Favorites |
 | `app/(tabs)/cart.js` | Screen/Cart |
 | `app/(tabs)/profile.js` | Screen/Profile |
-| `app/favorites.js` | Screen/Favorites |
 | `app/product/[id].js` | Screen/ProductDetails |
 | `app/about.js` | Screen/About |
+
+Navigation uses Expo Router layouts in `app/_layout.js` and `app/(tabs)/_layout.js` instead of a separate `AppNavigator.js`. The root Stack handles Welcome and pushed screens; the Tabs layout handles Home, Favorites, Cart, and Profile.
 
 ## Liquid Glass implementation
 
@@ -91,6 +93,6 @@ A few implementation details are worth keeping in mind:
 
 - Avoid setting `opacity` on a parent of a glass surface. It flattens the glass effect. The press state uses `scale` instead.
 - `isInteractive` is read when `GlassView` mounts. Changing it afterward will not update the mounted view.
-- The outline on the "KatalogKu" text is made from eight offset copies because React Native does not support text stroke.
+- The "KatalogKu" wordmark uses a web text shadow and offset text copies on native platforms to reproduce the Figma outline.
 - The Welcome screen's background blobs use gradients. The Figma export uses a blurred SVG, so the result is an approximation.
 - Product data is static prototype data. Seller details, stock, delivery information, full descriptions, and ratings are not connected to a catalog service. Verify these values with an authoritative source before using them in production.

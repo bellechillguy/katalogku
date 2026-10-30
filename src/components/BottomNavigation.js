@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import GlassSurface from './GlassSurface';
 import { useCart } from '../context/CartContext';
+import { useFavorites } from '../context/FavoritesContext';
 import { colors, fonts, glassShadow, layout } from '../theme/tokens';
 
 /**
@@ -18,7 +19,9 @@ export default function BottomNavigation() {
   const router = useRouter();
   const pathname = usePathname();
   const { items: cartItems } = useCart();
+  const { ids: favoriteIds } = useFavorites();
   const cartCount = cartItems.reduce((count, item) => count + item.quantity, 0);
+  const favoriteCount = favoriteIds.length;
   const tabletLayout = width >= 700;
   const pillWidth = tabletLayout
     ? Math.min(640, width - 48)
@@ -54,6 +57,7 @@ export default function BottomNavigation() {
           label="Favorites"
           icon="heart-outline"
           active={selected === 'favorite'}
+          badge={favoriteCount}
           onPress={() => router.navigate('/favorites')}
         />
         <Tab
