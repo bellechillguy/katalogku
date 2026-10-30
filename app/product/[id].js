@@ -105,7 +105,7 @@ export default function ProductDetailsScreen() {
         contentContainerStyle={styles.scrollContent}
       >
         <BackHeader
-          title="Details"
+          title={product.name}
           onBack={() => router.back()}
           right={
             <Pressable
