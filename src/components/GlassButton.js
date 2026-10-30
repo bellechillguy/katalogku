@@ -74,9 +74,11 @@ export function GlassSwatch({ color, selected, onPress, accessibilityLabel, hitS
         style={[
           styles.swatch,
           { backgroundColor: color, boxShadow: glassShadow.button },
-          selected ? styles.selectedSwatch : styles.unselectedSwatch,
+          !selected && styles.unselectedSwatch,
         ]}
-      />
+      >
+        {selected ? <View pointerEvents="none" style={styles.selectedSwatchRing} /> : null}
+      </View>
     </Pressable>
   );
 }
@@ -144,7 +146,13 @@ const styles = StyleSheet.create({
     height: 35,
     borderRadius: 17.5,
   },
-  selectedSwatch: {
+  selectedSwatchRing: {
+    position: 'absolute',
+    left: -3,
+    top: -3,
+    width: 41,
+    height: 41,
+    borderRadius: 20.5,
     borderColor: colors.blueText,
     borderWidth: 1.5,
     borderStyle: 'dashed',

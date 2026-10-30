@@ -33,10 +33,12 @@ export default function ProductDetailsScreen() {
 
   const favorite = isFavorite(product.id);
   const crop = product.crops?.detail;
-  const galleryImages = product.detailImage
-    ? [product.detailImage, product.image]
-    : [product.image];
   const selectedColor = product.colors?.[colorIndex];
+  const galleryImages = selectedColor?.image
+    ? [selectedColor.image]
+    : product.detailImage
+      ? [product.detailImage, product.image]
+    : [product.image];
   const hasOptions = !!(product.colors || product.sizes);
 
   const handleFavoriteAction = () => {
@@ -153,7 +155,10 @@ export default function ProductDetailsScreen() {
                         color={color.value}
                         selected={i === colorIndex}
                         accessibilityLabel={`${color.name} color`}
-                        onPress={() => setColorIndex(i)}
+                        onPress={() => {
+                          setColorIndex(i);
+                          setImageIndex(0);
+                        }}
                       />
                     ))}
                   </View>

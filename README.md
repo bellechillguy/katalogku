@@ -16,7 +16,7 @@ The voice-search configuration is already in `app.json`.
 
 ## 2. Product images
 
-The photos are not committed. Download them from Figma (temporary URLs, valid ~7 days):
+Product images are organized under `assets/images/<product-id>/` and stored as WebP. Cardigan swatches load their matching color image. To refresh the Figma-exported base images, use the temporary URLs (valid ~7 days):
 
 ```bash
 node scripts/fetch-figma-assets.js

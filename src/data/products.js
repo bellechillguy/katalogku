@@ -3,27 +3,46 @@
 
 export const CATEGORIES = ['All', 'Fashion', 'Grocery', 'Electronics'];
 
-const CLOTHING_COLORS = [
-  { name: 'Plum', value: '#59354c' },
-  { name: 'Black', value: '#111111' },
-  { name: 'Beige', value: '#dbcabc' },
-  { name: 'Cream', value: '#f0eec0' },
-  { name: 'Blue', value: '#3c5c8e' },
+const CARDIGAN_COLORS = [
+  {
+    name: 'Purple',
+    value: '#59354c',
+    image: require('../../assets/images/fluffy-cashmere-cardigan/purple.webp'),
+  },
+  {
+    name: 'Black',
+    value: '#111111',
+    image: require('../../assets/images/fluffy-cashmere-cardigan/black.webp'),
+  },
+  {
+    name: 'Beige',
+    value: '#dbcabc',
+    image: require('../../assets/images/fluffy-cashmere-cardigan/beige.webp'),
+  },
+  {
+    name: 'Yellow',
+    value: '#f0eec0',
+    image: require('../../assets/images/fluffy-cashmere-cardigan/yellow.webp'),
+  },
+  {
+    name: 'Navy',
+    value: '#3c5c8e',
+    image: require('../../assets/images/fluffy-cashmere-cardigan/navy.webp'),
+  },
 ];
 
 export const PRODUCTS = [
   {
     id: 'fluffy-cashmere-cardigan',
-    name: 'Fluffy Cashmere Cardigan',
+    name: 'Fluffy Cashmere Relax Cardigan',
     category: 'Fashion',
     price: '$84.99',
-    image: require('../../assets/images/cardigan.webp'),
-    detailImage: require('../../assets/images/cardigan-detail.webp'),
+    image: CARDIGAN_COLORS[0].image,
     detailResizeMode: 'contain',
     description:
       'Indulge in the timelessness of 100% Cashmere Cardigan, crafted from luxuriously light, warm, and fluffy yarn.',
     rating: { value: 4, count: '1.67K' },
-    colors: CLOTHING_COLORS,
+    colors: CARDIGAN_COLORS,
     sizes: ['S', 'M', 'L'],
   },
   {
@@ -31,7 +50,7 @@ export const PRODUCTS = [
     name: 'Souffle Yarn Triangle Scarf',
     category: 'Fashion',
     price: '$16.99',
-    image: require('../../assets/images/scarf.webp'),
+    image: require('../../assets/images/souffle-yarn-triangle-scarf/main.webp'),
     detailResizeMode: 'contain',
   },
   {
@@ -39,7 +58,7 @@ export const PRODUCTS = [
     name: 'Puck Cream Cheese',
     category: 'Grocery',
     price: '$1.99',
-    image: require('../../assets/images/puck-cream-cheese.webp'),
+    image: require('../../assets/images/puck-cream-cheese/main.webp'),
     detailResizeMode: 'contain',
     crops: {
       grid: { height: '122.11%', left: 0, top: '-16.27%' },
@@ -51,7 +70,7 @@ export const PRODUCTS = [
     name: 'Heinz Pasta',
     category: 'Grocery',
     price: '$0.99',
-    image: require('../../assets/images/heinz-pasta.webp'),
+    image: require('../../assets/images/heinz-pasta/main.webp'),
     detailResizeMode: 'contain',
   },
   {
@@ -59,7 +78,7 @@ export const PRODUCTS = [
     name: 'JBL Tune 720BT',
     category: 'Electronics',
     price: '$59.99',
-    image: require('../../assets/images/jbl-tune-720bt.webp'),
+    image: require('../../assets/images/jbl-tune-720bt/main.webp'),
     detailResizeMode: 'contain',
   },
   {
@@ -67,7 +86,7 @@ export const PRODUCTS = [
     name: 'Apple TV 4th Gen',
     category: 'Electronics',
     price: '$299.99',
-    image: require('../../assets/images/apple-tv.webp'),
+    image: require('../../assets/images/apple-tv-4th-gen/main.webp'),
     detailResizeMode: 'contain',
   },
   {
@@ -75,7 +94,7 @@ export const PRODUCTS = [
     name: 'Apple Pencil Pro',
     category: 'Electronics',
     price: '$129.99',
-    image: require('../../assets/images/apple-pencil-pro.webp'),
+    image: require('../../assets/images/apple-pencil-pro/main.webp'),
     detailResizeMode: 'contain',
   },
   {
@@ -84,7 +103,7 @@ export const PRODUCTS = [
     category: 'Electronics',
     price: '$269.99',
     originalPrice: '$299.99',
-    image: require('../../assets/images/apple-smart-keyboard.webp'),
+    image: require('../../assets/images/apple-smart-keyboard/main.webp'),
     detailResizeMode: 'contain',
     discount: 10,
   },

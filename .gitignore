@@ -6,4 +6,4 @@ web-build/
 .env.*
 !.env.example
 .DS_Store
-*.log
+assets/source/
