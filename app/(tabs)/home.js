@@ -93,7 +93,7 @@ export default function HomeScreen() {
         data={products}
         keyExtractor={(item) => item.id}
         numColumns={numColumns}
-        columnWrapperStyle={[styles.column, { gap: GRID_COLUMN_GAP }]}
+        columnWrapperStyle={numColumns > 1 ? [styles.column, { gap: GRID_COLUMN_GAP }] : undefined}
         ItemSeparatorComponent={RowSeparator}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
