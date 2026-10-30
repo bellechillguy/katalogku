@@ -3,11 +3,13 @@
 KatalogKu is an Expo app built with Expo Router. It includes Welcome, Home, Product Details, Favorites, Cart, Profile, and About screens.
 
 <p>
-  <img width="206" height="458.5" alt="Welcome screen" src="https://github.com/user-attachments/assets/faa461d1-ce5f-46f4-b104-4e97eee99e40" />
-  <img width="206" height="458.5" alt="Home screen" src="https://github.com/user-attachments/assets/d74d4055-3108-41b3-9e79-d1e38c55d1d0" />
-  <img width="206" height="458.5" alt="Product details screen" src="https://github.com/user-attachments/assets/6d2ede34-e8f6-46bd-952b-328b98f05a2d" /> <br>
-  <img width="206" height="458.5" alt="Favorites screen" src="https://github.com/user-attachments/assets/1d3d160e-1499-4458-8375-1744372cb20e" />
-  <img width="206" height="458.5" alt="Profile screen" src="https://github.com/user-attachments/assets/2cc87dd9-74d0-4807-8411-00de3f95fed8" />
+<img width="206" height="458.5" alt="Image" src="https://github.com/user-attachments/assets/9225888e-53d8-4b8e-a2c3-af11c3ff1892" />
+<img width="206" height="458.5" alt="Image" src="https://github.com/user-attachments/assets/ab416492-7661-4e8a-97b0-16c983492682" />
+<img width="206" height="458.5" alt="Image" src="https://github.com/user-attachments/assets/da9d4881-1df0-472b-b075-c4fc2736e7a1" />
+<img width="206" height="458.5" alt="Image" src="https://github.com/user-attachments/assets/f2d3795f-9a44-4bf9-aa60-a929fd3c4074" />
+<img width="206" height="458.5" alt="Image" src="https://github.com/user-attachments/assets/f153b3e1-4d0b-44c5-ba9f-bcb93086201d" />
+<img width="206" height="458.5" alt="Image" src="https://github.com/user-attachments/assets/8717e3c5-84c9-4e89-bb33-5c22a7ab2137" />
+<img width="206" height="458.5" alt="Image" src="https://github.com/user-attachments/assets/1cc1640c-52f7-4d40-8ce7-86c816ae7eac" />
 </p>
 
 ## Installation
