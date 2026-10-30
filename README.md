@@ -1,66 +1,94 @@
-# KatalogKu — Figma → Expo (JavaScript)
+# KatalogKu
 
-Source: Figma file **PAWM**, page **Hi-Fi Dev*** (Welcome, Home, Product Details, Favorites, Profile).
+KatalogKu is an Expo app built. The implementation covers five screens: Welcome, Home, Product Details, Favorites, and Profile.
 
-## 1. Install
+<p>
+  <img width="206" height="458.5" alt="Welcome screen" src="https://github.com/user-attachments/assets/faa461d1-ce5f-46f4-b104-4e97eee99e40" />
+  <img width="206" height="458.5" alt="Home screen" src="https://github.com/user-attachments/assets/d74d4055-3108-41b3-9e79-d1e38c55d1d0" />
+  <img width="206" height="458.5" alt="Product details screen" src="https://github.com/user-attachments/assets/6d2ede34-e8f6-46bd-952b-328b98f05a2d" />
+  <img width="206" height="458.5" alt="Favorites screen" src="https://github.com/user-attachments/assets/1d3d160e-1499-4458-8375-1744372cb20e" />
+  <img width="206" height="458.5" alt="Profile screen" src="https://github.com/user-attachments/assets/2cc87dd9-74d0-4807-8411-00de3f95fed8" />
+</p>
 
-This directory is a standalone Expo project:
+## Installation
+
+This folder contains a standalone Expo project. Install its dependencies with:
 
 ```bash
 npm install
 ```
 
-The design uses **Montserrat** and **Open Sans**. Profile details and favorites are saved locally with AsyncStorage; the app does not yet connect to an account or product-catalog service.
+The app uses Montserrat and Open Sans. Profile details and favorites are stored on the device with AsyncStorage. There is currently no account system or connection to a product catalog.
 
-The voice-search configuration is already in `app.json`.
+Voice search is configured in `app.json`.
 
-## 2. Product images
+## Product images
 
-Product images are organized under `assets/images/<product-id>/` and stored as WebP. Cardigan swatches load their matching color image. To refresh the Figma-exported base images, use the temporary URLs (valid ~7 days):
+Product images are stored as WebP files under `assets/images/<product-id>/`. Each cardigan color swatch loads the image for its matching color.
+
+To download the original images exported from Figma, run:
 
 ```bash
 node scripts/fetch-figma-assets.js
 ```
 
-## 3. Run
+The temporary source URLs are valid for approximately seven days, so download the assets before they expire.
+
+## Run the app
+
+Start the Expo development server with:
 
 ```bash
 npx expo start
 ```
 
-`expo-speech-recognition` is a native module, so use a development build, not Expo Go.
-For native iOS or Android builds, run `npx expo prebuild` followed by
-`npx expo run:ios` or `npx expo run:android`. Real Liquid Glass needs iOS 26+
-built with the Xcode 26 SDK.
+`expo-speech-recognition` uses native code, so the app must run in a development build. It will not work in Expo Go.
+
+To create and run a native project, use:
+
+```bash
+npx expo prebuild
+npx expo run:ios
+# or
+npx expo run:android
+```
+
+The native Liquid Glass effect requires iOS 26 or later and a build made with the Xcode 26 SDK.
 
 ## Routes
 
-| Route | Figma frame |
+| File | Figma frame |
 | --- | --- |
-| `app/index.js` | Welcome (1.8 s, then `/home`) |
+| `app/index.js` | Welcome (redirects to `/home` after 1.8 seconds) |
 | `app/(tabs)/home.js` | Screen/Home |
 | `app/(tabs)/profile.js` | Screen/Profile |
 | `app/favorites.js` | Screen/Favorites |
 | `app/product/[id].js` | Screen/ProductDetails |
 
-## How the Liquid Glass is built
+## Liquid Glass implementation
 
-`src/components/GlassSurface.js` follows the layer stack of your Figma glass components:
+`src/components/GlassSurface.js` recreates the layer structure used by the glass components in Figma.
 
-| Figma layer | Code |
+| Figma layer | Implementation |
 | --- | --- |
-| Fill + Shadow | `boxShadow` with the exact shadow strings (`glassShadow` in `src/theme/tokens.js`) |
-| White Backing | `backing` prop (white layer, 0.94 opacity) |
-| Tint | `tint` prop (solid colour under the glass) |
-| Glass Effect | `GlassView` (`expo-glass-effect`) on iOS 26+ |
+| Fill and Shadow | `boxShadow`, using the shadow values in `glassShadow` from `src/theme/tokens.js` |
+| White Backing | The `backing` prop adds a white layer with 0.94 opacity |
+| Tint | The `tint` prop sets the color beneath the glass |
+| Glass Effect | `GlassView` from `expo-glass-effect` on iOS 26 and later |
 
-On Android, iOS < 26, or when **Reduce Transparency** is on, the fallback is `BlurView` plus a gradient sheen tuned to the Figma look.
+On Android, earlier iOS versions, and devices with Reduce Transparency enabled, the component falls back to `BlurView` with a gradient sheen based on the Figma design.
 
-Used by: tab pill and profile circle (`BottomNavigation`), search field and X button (`SearchToolbar`), chips, swatches and the black pill button (`GlassButton`), text inputs (`GlassInput`).
+The glass components are used in these parts of the app:
 
-Notes:
-- Don't put `opacity` on an ancestor of a glass surface; it flattens the effect. Press feedback uses `scale` for that reason.
-- `isInteractive` is only read when `GlassView` mounts.
-- The text outline on "KatalogKu" is drawn with eight offset copies (React Native has no text stroke).
-- The Welcome blobs are approximated with gradients; the Figma export is a blurred SVG.
-- Product records are static prototype data. Seller, stock, delivery, and complete descriptions or ratings are not connected to a catalog service; confirm those values from an authoritative source before production.
+- `BottomNavigation`: the tab pill and profile circle
+- `SearchToolbar`: the search field and clear button
+- `GlassButton`: chips, color swatches, and the black pill button
+- `GlassInput`: text inputs
+
+A few implementation details are worth keeping in mind:
+
+- Avoid setting `opacity` on a parent of a glass surface. It flattens the glass effect. The press state uses `scale` instead.
+- `isInteractive` is read when `GlassView` mounts. Changing it afterward will not update the mounted view.
+- The outline on the "KatalogKu" text is made from eight offset copies because React Native does not support text stroke.
+- The Welcome screen's background blobs use gradients. The Figma export uses a blurred SVG, so the result is an approximation.
+- Product data is static prototype data. Seller details, stock, delivery information, full descriptions, and ratings are not connected to a catalog service. Verify these values with an authoritative source before using them in production.
