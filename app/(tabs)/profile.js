@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,33 +7,27 @@ import { TitleHeader } from '../../src/components/HeaderBar';
 import GlassInput from '../../src/components/GlassInput';
 import { GlassButton } from '../../src/components/GlassButton';
 import { colors, fonts, layout } from '../../src/theme/tokens';
+import useForm from '../../src/hooks/useForm';
+import { validateProfile } from '../../src/utils/validators';
+import { TABLET_FORM_MAX_WIDTH } from '../../src/utils/layout';
 
 const PROFILE_STORAGE_KEY = '@katalogku/profile';
 const EMPTY_FORM = { name: '', email: '', phone: '' };
 
-function validateField(field, value) {
-  const normalized = value.trim();
-  if (field === 'name') return normalized ? '' : 'Please enter your full name.';
-  if (field === 'email') {
-    if (!normalized) return 'Please enter your email address.';
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized)
-      ? ''
-      : 'Enter a valid email address.';
-  }
-  if (field === 'phone' && normalized) {
-    const digits = normalized.replace(/\D/g, '');
-    return digits.length >= 8 && digits.length <= 15
-      ? ''
-      : 'Enter a phone number with 8–15 digits.';
-  }
-  return '';
-}
-
 export default function ProfileScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const [form, setForm] = useState(EMPTY_FORM);
-  const [touched, setTouched] = useState({});
+  const { width } = useWindowDimensions();
+  const formWidth = Math.min(width - layout.screenPadding * 2, TABLET_FORM_MAX_WIDTH);
+  const {
+    values: form,
+    setValues: setForm,
+    setFieldValue,
+    touched,
+    markTouched,
+    errors,
+    handleSubmit,
+  } = useForm(EMPTY_FORM, validateProfile);
   const [status, setStatus] = useState(null);
   const [ready, setReady] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -62,33 +56,29 @@ export default function ProfileScreen() {
   }, []);
 
   const updateField = (field, value) => {
-    setForm((current) => ({ ...current, [field]: value }));
+    setFieldValue(field, value);
     setStatus(null);
   };
 
   const blurField = (field) => {
-    setTouched((current) => ({ ...current, [field]: true }));
+    markTouched(field);
   };
 
-  const save = async () => {
+  const save = async (validatedForm) => {
     if (!ready || saving) return;
     Keyboard.dismiss();
-    setTouched({ name: true, email: true, phone: true });
-    const invalid = Object.keys(form).some((field) => validateField(field, form[field]));
-    if (invalid) {
-      setStatus({ type: 'error', message: 'Check the highlighted fields and try again.' });
-      return;
-    }
-
     setSaving(true);
     setStatus(null);
     try {
       await AsyncStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify({
-        name: form.name.trim(),
-        email: form.email.trim(),
-        phone: form.phone.trim(),
+        name: validatedForm.name.trim(),
+        email: validatedForm.email.trim(),
+        phone: validatedForm.phone.trim(),
       }));
-      setStatus({ type: 'success', message: 'Your profile has been saved.' });
+      setStatus({
+        type: 'success',
+        message: 'Profile saved on this device.',
+      });
     } catch {
       setStatus({ type: 'error', message: 'Could not save your profile. Please try again.' });
     } finally {
@@ -96,21 +86,28 @@ export default function ProfileScreen() {
     }
   };
 
-  const errorFor = (field) => touched[field] ? validateField(field, form[field]) : '';
+  const submit = handleSubmit(
+    save,
+    () => setStatus({ type: 'error', message: 'Check the highlighted fields and try again.' })
+  );
+
+  const errorFor = (field) => touched[field] ? errors[field] ?? '' : '';
 
   return (
     <View style={styles.screen}>
       <ScrollView
+        automaticallyAdjustKeyboardInsets
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="interactive"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: insets.bottom + layout.navBottomOffset + 62 + 24 }}
       >
-        <TitleHeader title="Profile" subtitle="Complete your account details" />
+        <TitleHeader title="Profile" subtitle="Manage your account details" />
 
-        <View style={styles.form}>
+        <View style={[styles.form, { width: formWidth, alignSelf: 'center' }]}>
           <GlassInput
             label="Full Name"
+            required
             placeholder="Jane Doe"
             value={form.name}
             error={errorFor('name')}
@@ -123,6 +120,7 @@ export default function ProfileScreen() {
           />
           <GlassInput
             label="Email"
+            required
             placeholder="jane_doe@mail.com"
             value={form.email}
             error={errorFor('email')}
@@ -136,7 +134,8 @@ export default function ProfileScreen() {
             returnKeyType="next"
           />
           <GlassInput
-            label="Phone Number (optional)"
+            label="Phone Number"
+            required
             placeholder="0888-888-8888"
             value={form.phone}
             error={errorFor('phone')}
@@ -151,19 +150,32 @@ export default function ProfileScreen() {
         <Pressable
           accessibilityRole="button"
           onPress={() => router.push('/change-password')}
-          style={({ pressed }) => [styles.passwordLink, pressed && styles.passwordLinkPressed]}
+          style={({ pressed }) => [styles.passwordLink, { width: formWidth }, pressed && styles.passwordLinkPressed]}
         >
           <View>
             <Text style={styles.passwordTitle}>Password</Text>
-            <Text style={styles.passwordDescription}>Change your account password</Text>
+            <Text style={styles.passwordDescription}>Password changes aren’t available yet</Text>
           </View>
-          <Text style={styles.passwordAction}>Change</Text>
+          <Text style={styles.passwordAction}>Details</Text>
         </Pressable>
 
-        <View style={styles.action}>
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => router.push('/about')}
+          style={({ pressed }) => [styles.passwordLink, styles.aboutLink, { width: formWidth }, pressed && styles.passwordLinkPressed]}
+        >
+          <View>
+            <Text style={styles.passwordTitle}>About KatalogKu</Text>
+            <Text style={styles.passwordDescription}>Project and student information</Text>
+          </View>
+          <Text style={styles.passwordAction}>View</Text>
+        </Pressable>
+
+        <View style={[styles.action, { width: formWidth, alignSelf: 'center' }]}>
           <GlassButton
             label={!ready ? 'Loading…' : saving ? 'Saving…' : 'Save Profile'}
-            onPress={save}
+            onPress={submit}
+            disabled={!ready || saving}
             accessibilityLabel={!ready ? 'Loading saved profile' : saving ? 'Saving profile' : 'Save profile'}
           />
           {status ? (
@@ -192,7 +204,7 @@ const styles = StyleSheet.create({
     gap: 26,
   },
   passwordLink: {
-    marginHorizontal: layout.screenPadding,
+    alignSelf: 'center',
     marginTop: 28,
     minHeight: 60,
     paddingHorizontal: 14,
@@ -205,6 +217,9 @@ const styles = StyleSheet.create({
   },
   passwordLinkPressed: {
     backgroundColor: 'rgba(17,17,17,0.04)',
+  },
+  aboutLink: {
+    marginTop: 12,
   },
   passwordTitle: {
     fontFamily: fonts.montserratSemiBold,

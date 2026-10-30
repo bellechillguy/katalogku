@@ -11,12 +11,17 @@ export default function GlassInput({
   icon,
   iconSize = 18,
   iconColor = colors.black,
+  required = false,
   style,
   ...inputProps
 }) {
+  const fieldAccessibilityLabel = required ? `${label}, required` : label;
+
   return (
     <View style={[styles.group, style]}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={styles.label} accessibilityLabel={fieldAccessibilityLabel}>
+        {label}{required ? <Text style={styles.required}> *</Text> : null}
+      </Text>
       <GlassSurface
         shadow={glassShadow.surface}
         borderColor="rgba(17,17,17,0.2)"
@@ -34,7 +39,7 @@ export default function GlassInput({
           />
         ) : null}
         <TextInput
-          accessibilityLabel={label}
+          accessibilityLabel={fieldAccessibilityLabel}
           placeholderTextColor={colors.labelControlsTertiary}
           selectionColor={colors.blue}
           style={styles.input}
@@ -55,6 +60,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 18,
     color: colors.black,
+  },
+  required: {
+    color: colors.redText,
   },
   field: {
     height: 48,

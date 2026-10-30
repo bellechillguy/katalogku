@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   content: {
+    width: '100%',
+    maxWidth: 560,
+    alignSelf: 'center',
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
