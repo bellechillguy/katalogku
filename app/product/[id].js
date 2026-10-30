@@ -224,14 +224,13 @@ export default function ProductDetailsScreen() {
               >
                 <Text style={styles.cancelLabel}>Cancel</Text>
               </Pressable>
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel="Confirm remove from favorites"
+              <GlassButton
                 onPress={confirmFavoriteRemoval}
-                style={[styles.dialogButton, styles.removeConfirmButton]}
-              >
-                <Text style={styles.removeConfirmLabel}>Remove</Text>
-              </Pressable>
+                label="Remove"
+                variant="danger"
+                accessibilityLabel="Confirm remove from favorites"
+                style={styles.dangerAction}
+              />
             </View>
           </View>
         </View>
@@ -467,12 +466,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: colors.black,
   },
-  removeConfirmButton: {
-    backgroundColor: colors.red,
-  },
-  removeConfirmLabel: {
-    fontFamily: fonts.montserratSemiBold,
-    fontSize: 13,
-    color: colors.black,
+  dangerAction: {
+    minWidth: 88,
+    height: 44,
   },
 });

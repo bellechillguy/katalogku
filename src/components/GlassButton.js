@@ -7,8 +7,18 @@ import { colors, fonts, glassShadow } from '../theme/tokens';
 // Press feedback therefore uses a small scale transform instead.
 const pressScale = ({ pressed }) => ({ transform: [{ scale: pressed ? 0.96 : 1 }] });
 
-/** Opaque black "Glass Prominent" pill — Add to Favorite / Save Profile (Button/*). */
-export function GlassButton({ label, onPress, style, accessibilityLabel }) {
+/** Primary and danger actions, including the shared confirmation dialog action. */
+export function GlassButton({
+  label,
+  onPress,
+  style,
+  accessibilityLabel,
+  variant = 'primary',
+  buttonStyle,
+  labelStyle,
+}) {
+  const danger = variant === 'danger';
+
   return (
     <Pressable
       accessibilityRole="button"
@@ -16,8 +26,18 @@ export function GlassButton({ label, onPress, style, accessibilityLabel }) {
       onPress={onPress}
       style={(s) => [pressScale(s), style]}
     >
-      <View style={[styles.primary, { boxShadow: glassShadow.primary }]}>
-        <Text style={styles.primaryLabel} numberOfLines={1}>
+      <View
+        style={[
+          styles.primary,
+          danger && styles.danger,
+          !danger && { boxShadow: glassShadow.primary },
+          buttonStyle,
+        ]}
+      >
+        <Text
+          style={[styles.primaryLabel, danger && styles.dangerLabel, labelStyle]}
+          numberOfLines={1}
+        >
           {label}
         </Text>
       </View>
@@ -121,6 +141,22 @@ const styles = StyleSheet.create({
     lineHeight: 18.106,
     color: colors.white,
     textAlign: 'center',
+  },
+  danger: {
+    width: '100%',
+    height: '100%',
+    minWidth: 0,
+    paddingHorizontal: 14,
+    borderRadius: 12,
+    backgroundColor: colors.red,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dangerLabel: {
+    fontFamily: fonts.montserratSemiBold,
+    fontSize: 13,
+    lineHeight: 18,
+    color: colors.black,
   },
   chip: {
     height: 34,

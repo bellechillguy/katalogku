@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BackHeader } from '../src/components/HeaderBar';
+import { GlassButton } from '../src/components/GlassButton';
 import ProductCard from '../src/components/ProductCard';
 import BottomNavigation from '../src/components/BottomNavigation';
 import { useFavorites } from '../src/context/FavoritesContext';
@@ -25,7 +26,7 @@ export default function FavoritesScreen() {
 
   return (
     <View style={styles.screen}>
-      <BackHeader title="Favorite" onBack={() => router.back()} />
+      <BackHeader title="Favorites" onBack={() => router.back()} />
 
       <FlatList
         data={products}
@@ -93,14 +94,13 @@ export default function FavoritesScreen() {
               >
                 <Text style={styles.cancelLabel}>Cancel</Text>
               </Pressable>
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel="Confirm remove from favorites"
+              <GlassButton
                 onPress={confirmRemoval}
-                style={[styles.dialogButton, styles.removeConfirmButton]}
-              >
-                <Text style={styles.removeConfirmLabel}>Remove</Text>
-              </Pressable>
+                label="Remove"
+                variant="danger"
+                accessibilityLabel="Confirm remove from favorites"
+                style={styles.dangerAction}
+              />
             </View>
           </View>
         </View>
@@ -212,12 +212,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: colors.black,
   },
-  removeConfirmButton: {
-    backgroundColor: colors.red,
-  },
-  removeConfirmLabel: {
-    fontFamily: fonts.montserratSemiBold,
-    fontSize: 13,
-    color: colors.black,
+  dangerAction: {
+    minWidth: 88,
+    height: 44,
   },
 });

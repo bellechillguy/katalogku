@@ -1,10 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import GlassSurface from './GlassSurface';
 import { colors, fonts, glassShadow } from '../theme/tokens';
 
 /** Input/* — label above a 48px glass pill field. */
-export default function GlassInput({ label, error, style, ...inputProps }) {
+export default function GlassInput({
+  label,
+  error,
+  icon,
+  iconSize = 18,
+  iconColor = colors.black,
+  style,
+  ...inputProps
+}) {
   return (
     <View style={[styles.group, style]}>
       <Text style={styles.label}>{label}</Text>
@@ -14,6 +23,16 @@ export default function GlassInput({ label, error, style, ...inputProps }) {
         borderWidth={1}
         style={styles.field}
       >
+        {icon ? (
+          <Ionicons
+            name={icon}
+            size={iconSize}
+            color={iconColor}
+            accessibilityElementsHidden
+            importantForAccessibility="no"
+            style={styles.icon}
+          />
+        ) : null}
         <TextInput
           accessibilityLabel={label}
           placeholderTextColor={colors.labelControlsTertiary}
@@ -39,11 +58,16 @@ const styles = StyleSheet.create({
   },
   field: {
     height: 48,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingLeft: 11,
     paddingRight: 10,
   },
+  icon: {
+    marginLeft: 12,
+  },
   input: {
+    flex: 1,
     fontFamily: fonts.openSansSemiBold,
     fontSize: 16,
     color: colors.black,

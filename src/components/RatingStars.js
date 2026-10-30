@@ -4,10 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/tokens';
 
 /** Stars — five 20px stars, 6.7px apart. */
-export default function RatingStars({ value = 0, size = 20 }) {
+export default function RatingStars({ value = 0, size = 20, gap = 6.737 }) {
   return (
     <View
-      style={styles.row}
+      style={[styles.row, { gap }]}
       accessible
       accessibilityRole="image"
       accessibilityLabel={`Rated ${value} out of 5`}
@@ -27,6 +27,5 @@ export default function RatingStars({ value = 0, size = 20 }) {
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    gap: 6.737,
   },
 });

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "KatalogKu 2",
-    "slug": "katalogku2",
+    "name": "KatalogKu",
+    "slug": "katalogku",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",

@@ -47,7 +47,7 @@ export const layout = {
   headerHeight: 132,
   gridPadding: 33,
   cardSize: 164,
-  cardHeaderHeight: 44,
+  cardHeaderHeight: 58,
   cardRadius: 11.524,
   navBottomOffset: 10, // added to the bottom safe-area inset (Figma: 44px from the bottom edge)
 };

@@ -9,14 +9,21 @@ export default function ProductCard({ product, onPress, onRemove, context = 'gri
   const crop = product.crops?.[context];
   const discount = Number(product.discount);
   const isFavoriteCard = context === 'favorites';
-  const headerHeight = isFavoriteCard ? 64 : product.originalPrice ? 58 : layout.cardHeaderHeight;
+  const headerHeight = isFavoriteCard ? 64 : product.originalPrice ? 64 : 58;
 
   return (
     <View style={styles.shadow}>
       <Pressable
         onPress={onPress}
         accessibilityRole="button"
-        accessibilityLabel={`${product.name}, ${product.category}, ${product.price}`}
+        accessibilityLabel={[
+          product.name,
+          product.category,
+          product.price,
+          product.rating
+            ? `Rated ${product.rating.value.toFixed(1)} out of 5, ${product.rating.count} reviews`
+            : null,
+        ].filter(Boolean).join(', ')}
         style={({ pressed }) => [styles.card, pressed && styles.pressed]}
       >
         <View style={[styles.media, { height: layout.cardSize - headerHeight }]}>
@@ -30,6 +37,13 @@ export default function ProductCard({ product, onPress, onRemove, context = 'gri
               <Text style={styles.discountLabel}>-{discount}%</Text>
             </View>
           ) : null}
+          {product.rating ? (
+            <View style={styles.ratingBadge} pointerEvents="none">
+              <Ionicons name="star" size={11} color={colors.starFilled} />
+              <Text style={styles.ratingValue}>{product.rating.value.toFixed(1)}</Text>
+              <Text style={styles.ratingCount}>· {product.rating.count}</Text>
+            </View>
+          ) : null}
         </View>
 
         <View style={[
@@ -40,7 +54,7 @@ export default function ProductCard({ product, onPress, onRemove, context = 'gri
           <View style={[styles.titleRow, isFavoriteCard && styles.favoriteTitleRow]}>
             <Text
               style={[styles.title, isFavoriteCard && styles.favoriteTitle]}
-              numberOfLines={isFavoriteCard ? 2 : 1}
+              numberOfLines={2}
             >
               {product.name}
             </Text>
@@ -48,7 +62,7 @@ export default function ProductCard({ product, onPress, onRemove, context = 'gri
           <View style={styles.headerMeta}>
             <View style={styles.categoryMeta}>
               <View style={styles.icon}>
-                <Ionicons name={CATEGORY_ICON[product.category]} size={18} color={colors.black} />
+                <Ionicons name={CATEGORY_ICON[product.category]} size={16} color={colors.black} />
               </View>
               <Text style={styles.category} numberOfLines={1}>
                 {product.category}
@@ -113,14 +127,14 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: layout.cardHeaderHeight,
+    height: 58,
     paddingHorizontal: 7,
-    paddingVertical: 4,
+    paddingVertical: 3,
     justifyContent: 'center',
     gap: 2,
   },
   expandedHeader: {
-    height: 58,
+    height: 64,
     paddingHorizontal: 8,
     paddingVertical: 3,
     gap: 2,
@@ -132,7 +146,7 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   titleRow: {
-    minHeight: 20,
+    minHeight: 30,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
@@ -161,14 +175,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
+    flex: 1,
+    minWidth: 0,
     fontFamily: fonts.montserratSemiBold,
-    fontSize: 11,
-    lineHeight: 13,
+    fontSize: 13,
+    lineHeight: 15,
     color: colors.black,
   },
   favoriteTitle: {
     flex: 1,
-    fontSize: 12,
+    fontSize: 13,
     lineHeight: 15,
   },
   category: {
@@ -236,6 +252,32 @@ const styles = StyleSheet.create({
     fontSize: 11,
     lineHeight: 13,
     color: colors.black,
+  },
+  ratingBadge: {
+    position: 'absolute',
+    left: 6,
+    bottom: 6,
+    paddingHorizontal: 7,
+    paddingVertical: 4,
+    borderRadius: 11,
+    backgroundColor: 'rgba(249,250,251,0.97)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(17,17,17,0.12)',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+  },
+  ratingValue: {
+    fontFamily: fonts.montserratSemiBold,
+    fontSize: 10,
+    lineHeight: 12,
+    color: colors.black,
+  },
+  ratingCount: {
+    fontFamily: fonts.openSans,
+    fontSize: 10,
+    lineHeight: 12,
+    color: colors.labelControlsTertiary,
   },
   removeButton: {
     position: 'absolute',

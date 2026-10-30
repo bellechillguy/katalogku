@@ -34,7 +34,7 @@ export default function BottomNavigation() {
           onPress={() => router.navigate('/home')}
         />
         <Tab
-          label="Favorite"
+          label="Favorites"
           icon="heart-outline"
           active={selected === 'favorite'}
           onPress={() => router.navigate('/favorites')}
