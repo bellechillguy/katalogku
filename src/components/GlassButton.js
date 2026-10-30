@@ -13,6 +13,7 @@ export function GlassButton({
   onPress,
   style,
   accessibilityLabel,
+  disabled = false,
   variant = 'primary',
   buttonStyle,
   labelStyle,
@@ -23,6 +24,8 @@ export function GlassButton({
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? label}
+      accessibilityState={{ disabled }}
+      disabled={disabled}
       onPress={onPress}
       style={(s) => [pressScale(s), style]}
     >
@@ -31,11 +34,17 @@ export function GlassButton({
           styles.primary,
           danger && styles.danger,
           !danger && { boxShadow: glassShadow.primary },
+          disabled && styles.disabledPrimary,
           buttonStyle,
         ]}
       >
         <Text
-          style={[styles.primaryLabel, danger && styles.dangerLabel, labelStyle]}
+          style={[
+            styles.primaryLabel,
+            danger && styles.dangerLabel,
+            disabled && styles.disabledLabel,
+            labelStyle,
+          ]}
           numberOfLines={1}
         >
           {label}
@@ -157,6 +166,14 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     color: colors.black,
+  },
+  disabledPrimary: {
+    backgroundColor: '#D1D1D6',
+    borderColor: '#D1D1D6',
+    boxShadow: '0px 0px 0px 0px rgba(0,0,0,0)',
+  },
+  disabledLabel: {
+    color: '#6E6E73',
   },
   chip: {
     height: 34,

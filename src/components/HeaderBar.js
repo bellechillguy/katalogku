@@ -46,7 +46,7 @@ export function TitleHeader({ title, subtitle }) {
   );
 }
 
-/** HeaderBar/Details + HeaderBar/Favorites — back arrow, title, optional right action. */
+/** HeaderBar/Details — back arrow, title, optional right action. */
 export function BackHeader({ title, onBack, right, showBack = true }) {
   return (
     <View style={styles.bar}>
@@ -62,7 +62,12 @@ export function BackHeader({ title, onBack, right, showBack = true }) {
           <Ionicons name="arrow-back" size={32} color={colors.black} />
         </Pressable>
       ) : null}
-      <Text style={styles.backTitle} accessibilityRole="header">
+      <Text
+        style={[styles.backTitle, right && styles.backTitleWithRight]}
+        accessibilityRole="header"
+        numberOfLines={right ? 2 : 1}
+        ellipsizeMode="tail"
+      >
         {title}
       </Text>
       {right ? <View style={styles.right}>{right}</View> : null}
@@ -113,6 +118,11 @@ const styles = StyleSheet.create({
     fontFamily: fonts.montserratSemiBold,
     fontSize: 24,
     color: colors.black,
+  },
+  backTitleWithRight: {
+    right: 124,
+    fontSize: 20,
+    lineHeight: 24,
   },
   right: {
     position: 'absolute',

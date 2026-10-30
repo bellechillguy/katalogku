@@ -11,6 +11,7 @@ import {
 } from '@expo-google-fonts/montserrat';
 import { OpenSans_400Regular, OpenSans_600SemiBold } from '@expo-google-fonts/open-sans';
 import { FavoritesProvider } from '../src/context/FavoritesContext';
+import { CartProvider } from '../src/context/CartContext';
 import { colors } from '../src/theme/tokens';
 
 export default function RootLayout() {
@@ -27,20 +28,22 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <FavoritesProvider>
-      <StatusBar style="dark" />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: colors.white },
-        }}
-      >
-        <Stack.Screen name="index" options={{ animation: 'fade' }} />
-        <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
-        <Stack.Screen name="favorites" options={{ animation: 'slide_from_right' }} />
-        <Stack.Screen name="change-password" options={{ animation: 'slide_from_right' }} />
-        <Stack.Screen name="product/[id]" options={{ animation: 'slide_from_right' }} />
-      </Stack>
-    </FavoritesProvider>
+    <CartProvider>
+      <FavoritesProvider>
+        <StatusBar style="dark" />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: colors.white },
+          }}
+        >
+          <Stack.Screen name="index" options={{ animation: 'fade' }} />
+          <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
+          <Stack.Screen name="change-password" options={{ animation: 'slide_from_right' }} />
+          <Stack.Screen name="about" options={{ animation: 'slide_from_right' }} />
+          <Stack.Screen name="product/[id]" options={{ animation: 'slide_from_right' }} />
+        </Stack>
+      </FavoritesProvider>
+    </CartProvider>
   );
 }

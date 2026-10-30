@@ -10,16 +10,18 @@ export default function RatingStars({ value = 0, size = 20, gap = 6.737 }) {
       style={[styles.row, { gap }]}
       accessible
       accessibilityRole="image"
-      accessibilityLabel={`Rated ${value} out of 5`}
+      accessibilityLabel={`Demo rating ${value} out of 5`}
     >
-      {[1, 2, 3, 4, 5].map((n) => (
-        <Ionicons
-          key={n}
-          name="star"
-          size={size}
-          color={n <= value ? colors.starFilled : colors.starEmpty}
-        />
-      ))}
+      {[1, 2, 3, 4, 5].map((n) => {
+        const fraction = value - (n - 1);
+        const name = fraction >= 0.75
+          ? 'star'
+          : fraction >= 0.25
+            ? 'star-half'
+            : 'star';
+        const color = fraction >= 0.25 ? colors.starFilled : colors.starEmpty;
+        return <Ionicons key={n} name={name} size={size} color={color} />;
+      })}
     </View>
   );
 }

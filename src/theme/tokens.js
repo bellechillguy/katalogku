@@ -15,7 +15,7 @@ export const colors = {
   labelControlsTertiary: '#6e6e73', // readable secondary text and placeholders
   fillVibrantTertiary: '#ededed', // Fills - Vibrant/Tertiary (tab selection)
   priceMuted: '#6e6e73',
-  cardMediaTint: 'rgba(133,180,235,0.5)',
+  cardMediaTint: '#f9fafb', // neutral backdrop keeps white-background product photos seamless
 };
 
 export const fonts = {
@@ -47,7 +47,7 @@ export const layout = {
   headerHeight: 132,
   gridPadding: 33,
   cardSize: 164,
-  cardHeaderHeight: 58,
+  cardHeaderHeight: 68,
   cardRadius: 11.524,
   navBottomOffset: 10, // added to the bottom safe-area inset (Figma: 44px from the bottom edge)
 };

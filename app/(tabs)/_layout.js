@@ -16,6 +16,8 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen name="home" />
+      <Tabs.Screen name="favorites" />
+      <Tabs.Screen name="cart" />
       <Tabs.Screen name="profile" />
     </Tabs>
   );

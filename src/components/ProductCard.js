@@ -5,14 +5,21 @@ import { CATEGORY_ICON } from '../data/products';
 import { colors, fonts, layout } from '../theme/tokens';
 
 /** ProductCard — compact product image with a readable header and optional actions. */
-export default function ProductCard({ product, onPress, onRemove, context = 'grid' }) {
+export default function ProductCard({
+  product,
+  onPress,
+  onRemove,
+  context = 'grid',
+  cardSize = layout.cardSize,
+}) {
   const crop = product.crops?.[context];
   const discount = Number(product.discount);
   const isFavoriteCard = context === 'favorites';
-  const headerHeight = isFavoriteCard ? 64 : product.originalPrice ? 64 : 58;
+  const cardHeight = cardSize + 24;
+  const headerHeight = product.originalPrice ? 76 : 68;
 
   return (
-    <View style={styles.shadow}>
+    <View style={[styles.shadow, { width: cardSize, height: cardHeight }]}>
       <Pressable
         onPress={onPress}
         accessibilityRole="button"
@@ -21,18 +28,18 @@ export default function ProductCard({ product, onPress, onRemove, context = 'gri
           product.category,
           product.price,
           product.rating
-            ? `Rated ${product.rating.value.toFixed(1)} out of 5, ${product.rating.count} reviews`
+            ? `Demo rating ${product.rating.value.toFixed(1)} out of 5, ${product.rating.count} sample reviews`
             : null,
         ].filter(Boolean).join(', ')}
         style={({ pressed }) => [styles.card, pressed && styles.pressed]}
       >
-        <View style={[styles.media, { height: layout.cardSize - headerHeight }]}>
+        <View style={[styles.media, { height: cardHeight - headerHeight }]}>
           <Image
             source={product.image}
             resizeMode="cover"
             style={crop ? [styles.imageCropped, crop] : styles.image}
           />
-          {discount > 0 ? (
+          {discount > 0 && !isFavoriteCard ? (
             <View style={styles.discountBadge}>
               <Text style={styles.discountLabel}>-{discount}%</Text>
             </View>
@@ -41,7 +48,7 @@ export default function ProductCard({ product, onPress, onRemove, context = 'gri
             <View style={styles.ratingBadge} pointerEvents="none">
               <Ionicons name="star" size={11} color={colors.starFilled} />
               <Text style={styles.ratingValue}>{product.rating.value.toFixed(1)}</Text>
-              <Text style={styles.ratingCount}>· {product.rating.count}</Text>
+              <Text style={styles.ratingCount}>· {product.rating.count} sample</Text>
             </View>
           ) : null}
         </View>
@@ -49,11 +56,10 @@ export default function ProductCard({ product, onPress, onRemove, context = 'gri
         <View style={[
           styles.header,
           product.originalPrice && styles.expandedHeader,
-          isFavoriteCard && styles.favoriteHeader,
         ]}>
-          <View style={[styles.titleRow, isFavoriteCard && styles.favoriteTitleRow]}>
+          <View style={styles.titleRow}>
             <Text
-              style={[styles.title, isFavoriteCard && styles.favoriteTitle]}
+              style={styles.title}
               numberOfLines={2}
             >
               {product.name}
@@ -95,7 +101,7 @@ export default function ProductCard({ product, onPress, onRemove, context = 'gri
           accessibilityRole="button"
           accessibilityLabel={`Remove ${product.name} from favorites`}
           hitSlop={6}
-          style={[styles.removeButton, isFavoriteCard && { top: layout.cardSize - headerHeight }]}
+          style={styles.removeButton}
         >
           <View style={styles.removeButtonVisual}>
             <Ionicons name="trash-outline" size={14} color={colors.black} />
@@ -127,39 +133,30 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: 58,
-    paddingHorizontal: 7,
-    paddingVertical: 3,
+    height: 68,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     justifyContent: 'center',
-    gap: 2,
-  },
-  expandedHeader: {
-    height: 64,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    gap: 2,
-  },
-  favoriteHeader: {
-    height: 64,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    gap: 2,
-  },
-  titleRow: {
-    minHeight: 30,
-    flexDirection: 'row',
-    alignItems: 'center',
     gap: 4,
   },
-  favoriteTitleRow: {
-    paddingRight: 34,
+  expandedHeader: {
+    height: 76,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    gap: 4,
+  },
+  titleRow: {
+    minHeight: 32,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
   headerMeta: {
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 5,
+    gap: 8,
   },
   categoryMeta: {
     flex: 1,
@@ -169,7 +166,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   icon: {
-    width: 18,
+    width: 17,
     height: 18,
     alignItems: 'center',
     justifyContent: 'center',
@@ -179,13 +176,8 @@ const styles = StyleSheet.create({
     minWidth: 0,
     fontFamily: fonts.montserratSemiBold,
     fontSize: 13,
-    lineHeight: 15,
+    lineHeight: 16,
     color: colors.black,
-  },
-  favoriteTitle: {
-    flex: 1,
-    fontSize: 13,
-    lineHeight: 15,
   },
   category: {
     fontFamily: fonts.montserrat,
@@ -194,20 +186,20 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   price: {
-    maxWidth: 45,
+    maxWidth: 68,
     fontFamily: fonts.montserrat,
-    fontSize: 11,
-    lineHeight: 13,
+    fontSize: 12,
+    lineHeight: 15,
     color: colors.priceMuted,
     textAlign: 'right',
   },
   favoritePrice: {
-    maxWidth: 62,
-    fontSize: 11,
-    lineHeight: 14,
+    maxWidth: 68,
+    fontSize: 12,
+    lineHeight: 15,
   },
   priceBlock: {
-    maxWidth: 62,
+    maxWidth: 68,
     alignItems: 'flex-end',
     justifyContent: 'center',
   },
@@ -218,15 +210,15 @@ const styles = StyleSheet.create({
   },
   originalPrice: {
     fontFamily: fonts.montserrat,
-    fontSize: 9,
-    lineHeight: 11,
+    fontSize: 11,
+    lineHeight: 13,
     color: colors.priceMuted,
     textDecorationLine: 'line-through',
     textAlign: 'right',
   },
   media: {
     width: '100%',
-    height: layout.cardSize - layout.cardHeaderHeight,
+    height: layout.cardSize + 24 - layout.cardHeaderHeight,
     backgroundColor: colors.cardMediaTint,
     overflow: 'hidden',
   },
@@ -240,10 +232,10 @@ const styles = StyleSheet.create({
   },
   discountBadge: {
     position: 'absolute',
-    top: 6,
-    left: 6,
-    paddingHorizontal: 6,
-    paddingVertical: 3,
+    top: 8,
+    left: 8,
+    paddingHorizontal: 7,
+    paddingVertical: 4,
     borderRadius: 6,
     backgroundColor: colors.red,
   },
@@ -255,28 +247,28 @@ const styles = StyleSheet.create({
   },
   ratingBadge: {
     position: 'absolute',
-    left: 6,
-    bottom: 6,
-    paddingHorizontal: 7,
-    paddingVertical: 4,
+    left: 8,
+    bottom: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
     borderRadius: 11,
     backgroundColor: 'rgba(249,250,251,0.97)',
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'rgba(17,17,17,0.12)',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 3,
+    gap: 4,
   },
   ratingValue: {
     fontFamily: fonts.montserratSemiBold,
-    fontSize: 10,
-    lineHeight: 12,
+    fontSize: 11,
+    lineHeight: 13,
     color: colors.black,
   },
   ratingCount: {
     fontFamily: fonts.openSans,
-    fontSize: 10,
-    lineHeight: 12,
+    fontSize: 11,
+    lineHeight: 13,
     color: colors.labelControlsTertiary,
   },
   removeButton: {

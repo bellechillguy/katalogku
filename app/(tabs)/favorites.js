@@ -1,22 +1,32 @@
 import React, { useState } from 'react';
-import { FlatList, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  FlatList,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BackHeader } from '../src/components/HeaderBar';
-import { GlassButton } from '../src/components/GlassButton';
-import ProductCard from '../src/components/ProductCard';
-import BottomNavigation from '../src/components/BottomNavigation';
-import { useFavorites } from '../src/context/FavoritesContext';
-import { PRODUCTS } from '../src/data/products';
-import { colors, fonts, layout } from '../src/theme/tokens';
+import { TitleHeader } from '../../src/components/HeaderBar';
+import { GlassButton } from '../../src/components/GlassButton';
+import ProductCard from '../../src/components/ProductCard';
+import { useFavorites } from '../../src/context/FavoritesContext';
+import { PRODUCTS } from '../../src/data/products';
+import { colors, fonts, layout } from '../../src/theme/tokens';
+import { getProductGridMetrics, GRID_COLUMN_GAP, TABLET_CONTENT_MAX_WIDTH } from '../../src/utils/layout';
 
 export default function FavoritesScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
   const { ids, toggle, ready } = useFavorites();
   const [pendingRemoval, setPendingRemoval] = useState(null);
   const products = PRODUCTS.filter((p) => ids.includes(p.id));
+  const { numColumns, cardSize } = getProductGridMetrics(width);
 
   const confirmRemoval = () => {
     if (!pendingRemoval) return;
@@ -26,23 +36,31 @@ export default function FavoritesScreen() {
 
   return (
     <View style={styles.screen}>
-      <BackHeader title="Favorites" onBack={() => router.back()} />
+      <TitleHeader
+        title="Favorites"
+        subtitle={ready
+          ? `${products.length} saved ${products.length === 1 ? 'product' : 'products'}`
+          : 'Your saved products'}
+      />
 
       <FlatList
+        key={`favorites-grid-${numColumns}`}
         data={products}
         keyExtractor={(item) => item.id}
-        numColumns={2}
-        columnWrapperStyle={styles.column}
+        numColumns={numColumns}
+        columnWrapperStyle={numColumns > 1 ? [styles.column, { gap: GRID_COLUMN_GAP }] : undefined}
         ItemSeparatorComponent={RowSeparator}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
           styles.grid,
+          { maxWidth: TABLET_CONTENT_MAX_WIDTH },
           { paddingBottom: insets.bottom + layout.navBottomOffset + 62 + 24 },
         ]}
         renderItem={({ item }) => (
           <ProductCard
             product={item}
             context="favorites"
+            cardSize={cardSize}
             onPress={() => router.push(`/product/${item.id}`)}
             onRemove={() => setPendingRemoval(item)}
           />
@@ -69,8 +87,6 @@ export default function FavoritesScreen() {
           </View>
         ) : null}
       />
-      <BottomNavigation />
-
       <Modal
         visible={!!pendingRemoval}
         transparent
@@ -117,11 +133,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   grid: {
+    width: '100%',
+    alignSelf: 'center',
     paddingHorizontal: 32,
     paddingTop: 18,
   },
   column: {
-    gap: 20,
+    justifyContent: 'center',
   },
   emptyState: {
     minHeight: 380,
