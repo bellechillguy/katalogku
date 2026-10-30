@@ -61,9 +61,11 @@ The native Liquid Glass effect requires iOS 26 or later and a build made with th
 | --- | --- |
 | `app/index.js` | Welcome (redirects to `/home` after 1.8 seconds) |
 | `app/(tabs)/home.js` | Screen/Home |
+| `app/(tabs)/cart.js` | Screen/Cart |
 | `app/(tabs)/profile.js` | Screen/Profile |
 | `app/favorites.js` | Screen/Favorites |
 | `app/product/[id].js` | Screen/ProductDetails |
+| `app/about.js` | Screen/About |
 
 ## Liquid Glass implementation
 
