@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "KatalogKu 2",
+    "slug": "katalogku2",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "katalogku2",
+    "plugins": [
+      "expo-font",
+      "expo-router",
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Allow KatalogKu to use the microphone for voice search.",
+          "speechRecognitionPermission": "Allow KatalogKu to recognize product searches from speech."
+        }
+      ]
+    ]
+  }
+}
